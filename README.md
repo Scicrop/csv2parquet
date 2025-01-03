@@ -1,43 +1,55 @@
 # Csv2Parquet
 
-🚀 **Csv2Parquet** is a Java-based project that provides utilities to transform CSV files into optimized Parquet files, analyze Parquet data, and generate dynamic Avro schemas. This tool is perfect for engineers and data scientists working with large datasets who want to leverage the efficiency of the Parquet format.
+🚀 **Csv2Parquet** is a Java-based library designed to simplify the conversion of CSV files into Parquet format, dynamically generate Avro schemas, and perform comprehensive Parquet file analysis. This tool is optimized for performance and scalability, making it ideal for processing large datasets.
 
 ## 🌟 Features
 
-- **CSV to Parquet Conversion**: Seamlessly convert CSV files into compressed Parquet files.
-- **Dynamic Schema Inference**: Automatically infer the schema from CSV headers and values.
-- **Parquet File Analysis**: Inspect and extract statistics from Parquet files to ensure data quality.
-- **Custom Avro Schema Generator**: Create Avro schemas dynamically from Java maps.
+- **CSV to Parquet Conversion**: Convert CSV files to optimized and compressed Parquet files effortlessly.
+- **Dynamic Schema Inference**: Automatically infer Avro schemas from CSV headers and sample data.
+- **Parquet File Analysis**: Analyze Parquet files, including record counts and column statistics.
+- **Schema Generator**: Create Avro schemas programmatically from Java `Map` objects.
+- **JUnit 5 Test Suite**: Comprehensive unit tests to validate the library's functionality.
 
 ## 📂 Project Structure
 
-This repository contains three primary classes:
-
-1. **`GenericCSVToParquet`**: Converts CSV files to Parquet format.
-2. **`ParquetFileAnalyzer`**: Analyzes Parquet files and provides insights such as record count and column statistics.
-3. **`SchemaGenerator`**: Dynamically generates Avro schemas from a Java `Map` of field names and types.
+- **`GenericCSVToParquet`**: Handles CSV to Parquet conversion with dynamic schema inference.
+- **`ParquetFileAnalyzer`**: Provides tools to analyze Parquet files, including record inspection and statistics generation.
+- **`SchemaGenerator`**: Dynamically generates Avro schemas based on field definitions.
+- **`Csv2ParquetTest`**: JUnit 5 test class to validate the main functionalities of the library.
 
 ## 🔧 Prerequisites
 
-- Java 11 or higher
-- Maven
+- Java 17 or higher
+- Maven 3.6+
 
 ## 📦 Dependencies
 
-Ensure the following dependencies are included in your `pom.xml`:
+The following dependencies are required and included in the `pom.xml`:
 
 ```xml
 <dependencies>
-    <dependency>
-        <groupId>org.apache.avro</groupId>
-        <artifactId>avro</artifactId>
-        <version>1.11.1</version>
-    </dependency>
+    <!-- Apache Parquet -->
     <dependency>
         <groupId>org.apache.parquet</groupId>
         <artifactId>parquet-avro</artifactId>
         <version>1.12.3</version>
     </dependency>
+
+    <!-- Apache Commons CSV -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-csv</artifactId>
+        <version>1.10.0</version>
+    </dependency>
+
+    <!-- Apache Avro -->
+    <dependency>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro</artifactId>
+        <version>1.11.2</version>
+    </dependency>
+
+    <!-- Apache Hadoop -->
     <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-common</artifactId>
@@ -48,10 +60,13 @@ Ensure the following dependencies are included in your `pom.xml`:
         <artifactId>hadoop-client</artifactId>
         <version>3.3.6</version>
     </dependency>
+
+    <!-- JUnit 5 -->
     <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-csv</artifactId>
-        <version>1.9.0</version>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.10.0</version>
+        <scope>test</scope>
     </dependency>
 </dependencies>
 ```
@@ -60,88 +75,58 @@ Ensure the following dependencies are included in your `pom.xml`:
 
 ### Running via Main Method
 
-1. **`GenericCSVToParquet`**
-   - Converts a CSV file into a Parquet file.
-   - Modify the file paths in the `main` method and run the class.
+1. **Convert CSV to Parquet**
+   - Use `GenericCSVToParquet` to process a CSV file:
 
-   ```bash
-   java com.scicrop.infinitestack.GenericCSVToParquet
-   ```
+     ```bash
+     java com.scicrop.infinitestack.GenericCSVToParquet /path/to/input.csv /path/to/output.parquet ,
+     ```
+     Replace `,` with your CSV delimiter if different.
 
-2. **`ParquetFileAnalyzer`**
-   - Analyze the generated Parquet file.
-   - Update the file path in the `main` method and run:
+2. **Analyze Parquet Files**
+   - Use `ParquetFileAnalyzer` to inspect and analyze Parquet files:
 
-   ```bash
-   java com.scicrop.infinitestack.ParquetFileAnalyzer
-   ```
+     ```bash
+     java com.scicrop.infinitestack.ParquetFileAnalyzer /path/to/output.parquet
+     ```
 
-3. **`SchemaGenerator`**
-   - Generate Avro schemas dynamically from a `Map`.
-   - Run the `main` method to see the generated schema:
+3. **Generate Avro Schema**
+   - Use `SchemaGenerator` to create Avro schemas dynamically:
 
-   ```bash
-   java com.scicrop.infinitestack.SchemaGenerator
-   ```
+     ```bash
+     java com.scicrop.infinitestack.SchemaGenerator
+     ```
 
 ### Integrating into Your Project
 
-1. Add this repository to your project as a dependency or clone it locally.
-
-2. Use the provided classes:
+1. Add this repository as a dependency or clone it locally.
+2. Use the classes programmatically in your application:
 
    ```java
-   // Example: Convert CSV to Parquet
-   GenericCSVToParquet converter = new GenericCSVToParquet();
-   converter.convert("/path/to/input.csv", "/path/to/output.parquet");
+   // Convert CSV to Parquet
+   GenericCSVToParquet.process("/tmp/input.csv", "/tmp/output.parquet", ',');
 
-   // Example: Analyze a Parquet file
-   ParquetFileAnalyzer analyzer = new ParquetFileAnalyzer("/path/to/output.parquet");
+   // Analyze a Parquet file
+   ParquetFileAnalyzer analyzer = new ParquetFileAnalyzer("/tmp/output.parquet");
    analyzer.print();
 
-   // Example: Generate Avro Schema
+   // Generate an Avro schema
    Map<String, Class<?>> fieldMap = Map.of(
        "InvoiceNo", String.class,
        "Quantity", Integer.class
    );
    Schema schema = SchemaGenerator.getSchemaByMap(fieldMap);
-   System.out.println(schema);
+   System.out.println(schema.toString(true));
    ```
 
-## 🛠️ Examples
+## 🧪 Running Tests
 
-### CSV to Parquet Conversion
+1. Navigate to the project directory.
+2. Run the tests with Maven:
 
-```java
-String csvFilePath = "/tmp/sales.csv";
-String parquetFilePath = "/tmp/sales.parquet";
-
-GenericCSVToParquet.main(new String[]{csvFilePath, parquetFilePath});
-```
-
-### Parquet Analysis
-
-```java
-ParquetFileAnalyzer analyzer = new ParquetFileAnalyzer("/tmp/sales.parquet");
-analyzer.print();
-```
-
-### Avro Schema Generation
-
-```java
-Map<String, Class<?>> fieldMap = Map.of(
-    "InvoiceNo", String.class,
-    "StockCode", String.class,
-    "Description", String.class,
-    "Quantity", Integer.class,
-    "InvoiceDate", String.class,
-    "UnitPrice", Double.class,
-    "CustomerID", String.class,
-    "Country", String.class
-);
-Schema schema = SchemaGenerator.getSchemaByMap(fieldMap);
-System.out.println(schema.toString(true));
-```
+   ```bash
+   mvn test
+   ```
 
 ## 📝 License
 
@@ -160,4 +145,3 @@ Contributions are welcome! Feel free to submit issues and pull requests to impro
 ---
 
 Enjoy using **Csv2Parquet**! 🌟 Feel free to reach out if you have any questions or feedback.
-
