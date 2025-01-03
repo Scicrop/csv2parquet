@@ -1,6 +1,6 @@
 # Csv2Parquet
 
-🚀 **Csv2Parquet** is a Java-based library designed to simplify the conversion of CSV files into Parquet format, dynamically generate Avro schemas, and perform comprehensive Parquet file analysis. This tool is optimized for performance and scalability, making it ideal for processing large datasets.
+🚀 **Csv2Parquet** is a Java-based library designed to simplify the conversion of CSV files into Parquet format, dynamically generate Avro schemas, and perform comprehensive Parquet file analysis. This tool is optimized for performance and scalability, making it ideal for processing large datasets. This library was first developed for the [InfiniteStack](https://infinitestack.ai) of [SciCrop](https://scicrop.com) and is now open-sourced as a SciCrop Academy initiative.
 
 ## 🌟 Features
 
